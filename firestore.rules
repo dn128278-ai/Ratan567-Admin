@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default fallback
+    match /{document=**} {
+      allow read, write: if true;
+    }
+
+    // Standard collections
+    match /markets/{marketId} {
+      allow read, write: if true;
+    }
+
+    match /market_results/{resultId} {
+      allow read, write: if true;
+    }
+
+    match /bids/{bidId} {
+      allow read, write: if true;
+    }
+
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    match /deposits/{depositId} {
+      allow read, write: if true;
+    }
+
+    match /withdrawals/{withdrawalId} {
+      allow read, write: if true;
+    }
+
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "ratan567 Admin Panel",
+  "description": "Real-time market management, result declaration, dynamic game rates, and transaction analytics dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

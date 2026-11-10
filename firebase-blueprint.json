@@ -1,0 +1,152 @@
+{
+  "entities": {
+    "Market": {
+      "title": "Market",
+      "description": "Represents a live Matka market with operating timings and declared results",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "openTime": { "type": "string", "maxLength": 10 },
+        "closeTime": { "type": "string", "maxLength": 10 },
+        "lastResult": { "type": "string", "maxLength": 50 },
+        "openPana": { "type": "string", "maxLength": 10 },
+        "closePana": { "type": "string", "maxLength": 10 },
+        "jodi": { "type": "string", "maxLength": 10 },
+        "status": { "type": "string", "enum": ["SCHEDULED", "RUNNING", "CLOSED"] },
+        "isActive": { "type": "boolean" },
+        "daysActive": { "type": "array" },
+        "declaredAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "openTime", "closeTime", "status", "isActive"]
+    },
+    "MarketResult": {
+      "title": "MarketResult",
+      "description": "Declared open, close, and jodi results for markets in real time",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "marketId": { "type": "string" },
+        "marketName": { "type": "string" },
+        "openPana": { "type": "string" },
+        "openDigit": { "type": "string" },
+        "closePana": { "type": "string" },
+        "closeDigit": { "type": "string" },
+        "jodi": { "type": "string" },
+        "fullResult": { "type": "string" },
+        "status": { "type": "string" },
+        "date": { "type": "string" },
+        "declaredAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["marketId", "fullResult"]
+    },
+    "Bid": {
+      "title": "Bid",
+      "description": "Represents a user wager/bid on a specific market and digit/pana combination",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user": { "type": "string", "maxLength": 100 },
+        "userId": { "type": "string" },
+        "mobile": { "type": "string", "maxLength": 15 },
+        "market": { "type": "string", "maxLength": 100 },
+        "marketId": { "type": "string", "maxLength": 100 },
+        "betType": { "type": "string", "maxLength": 50 },
+        "number": { "type": "string", "maxLength": 20 },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["Pending", "Won", "Lost"] },
+        "winAmount": { "type": "number" },
+        "placedAt": { "type": "string" },
+        "settledAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "mobile", "marketId", "betType", "number", "amount", "status"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Represents a customer or agent profile with main, gaming, and winning wallet balances",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "mobile": { "type": "string", "maxLength": 15 },
+        "role": { "type": "string", "enum": ["user", "agent", "admin"] },
+        "status": { "type": "string", "enum": ["Active", "Blocked"] },
+        "mainWallet": { "type": "number" },
+        "gamingWallet": { "type": "number" },
+        "winningWallet": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "email": { "type": "string", "maxLength": 120 }
+      },
+      "required": ["id", "name", "mobile", "role", "status", "mainWallet", "gamingWallet"]
+    },
+    "Deposit": {
+      "title": "Deposit",
+      "description": "Deposit requests and ledger records with approval statuses",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user": { "type": "string" },
+        "mobile": { "type": "string" },
+        "role": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentType": { "type": "string" },
+        "wallet": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Approved", "Rejected", "Completed"] },
+        "date": { "type": "string" },
+        "utrNo": { "type": "string" },
+        "reviewedAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "mobile", "amount", "status"]
+    },
+    "Withdrawal": {
+      "title": "Withdrawal",
+      "description": "Withdrawal requests and completed payouts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user": { "type": "string" },
+        "mobile": { "type": "string" },
+        "role": { "type": "string" },
+        "amount": { "type": "number" },
+        "wallet": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Approved", "Rejected", "Completed"] },
+        "date": { "type": "string" },
+        "paymentDetails": { "type": "object" },
+        "reviewedAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "mobile", "amount", "status"]
+    }
+  },
+  "firestore": {
+    "/markets/{marketId}": {
+      "schema": "Market",
+      "description": "Live Matka markets and current operational status"
+    },
+    "/market_results/{resultId}": {
+      "schema": "MarketResult",
+      "description": "Real-time declared results stream for user apps and charts"
+    },
+    "/bids/{bidId}": {
+      "schema": "Bid",
+      "description": "User wager bids and win/loss resolution tracking"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User accounts, roles, and triple-wallet ledger balances"
+    },
+    "/deposits/{depositId}": {
+      "schema": "Deposit",
+      "description": "Deposit requests and transaction ledger"
+    },
+    "/withdrawals/{withdrawalId}": {
+      "schema": "Withdrawal",
+      "description": "Withdrawal requests and payment distributions"
+    }
+  }
+}
